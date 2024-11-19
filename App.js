@@ -118,7 +118,7 @@ const App = () => {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.addButtonText}>Add Pokémon Test</Text>
+                <Text style={styles.addButtonText}>Add Pokémon</Text>
             </TouchableOpacity>
             <SectionList
                 sections={datasource}

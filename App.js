@@ -1,50 +1,51 @@
-
 import React from 'react';
 import {
     View,
     Text,
-    SectionList,
+    FlatList,
     StyleSheet,
-    TouchableOpacity,
     StatusBar,
     Image,
-    Button,
+    TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6'; // Import vector icons
+
 const datasource = [
     {
-        title: 'Fighting',
-        bgColor: 'red',
-        icon: 'hand-fist',
-        color: 'darkred',
+        title: 'Head Only',
+        bgColor: 'yellow',
+        icon: 'face-smile',
+        color: 'orange',
+        textColor: 'orange',
         data: [
             {
-                key: 'Hitmanlee',
-                image:
-                    'https://dz3we2x72f7ol.cloudfront.net/expansions/151/en-us/SV3pt5_EN_106-2x.png',
+                key: 'Excited',
+                desc: 'A wide smile',
+                image: require('./assets/fire.png'),
             },
             {
-                key: 'Hitmanchan',
-                image:
-                    'https://dz3we2x72f7ol.cloudfront.net/expansions/151/en-us/SV3pt5_EN_107-2x.png',
+                key: 'Happy',
+                desc: 'An innocent smile',
+                image: require('./assets/fang.png'),
             },
         ],
     },
     {
-        title: 'Psychic',
-        bgColor: 'pink',
-        icon: 'eye',
-        color:'purple',
+        title: 'Bigger Picture',
+        bgColor: 'olive',
+        icon: 'file-image',
+        color: 'green',
+        textColor: 'green',
         data: [
             {
-                key: 'Mew',
-                image:
-                    'https://dz3we2x72f7ol.cloudfront.net/expansions/151/en-us/SV3pt5_EN_151-2x.png',
+                key: 'P-Ko',
+                desc: 'An excited Peko',
+                image: require('./assets/pko.png'),
             },
             {
-                key: 'Mewtwo',
-                image:
-                    'https://dz3we2x72f7ol.cloudfront.net/expansions/151/en-us/SV3pt5_EN_150-2x.png',
+                key: 'Peashy',
+                desc: 'A hungry Peashy',
+                image: require('./assets/peashy.png'),
             },
         ],
     },
@@ -56,82 +57,89 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: StatusBar.currentHeight || 0,
     },
-    addButton: {
-        marginBottom: 10,
-        backgroundColor: '#4CAF50',
-        borderRadius: 5,
-        padding: 10,
-        alignItems: 'center',
-    },
-    addButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
     sectionHeader: {
         fontSize: 18,
         fontWeight: 'bold',
-        textAlign: 'left',
         padding: 10,
-        color: 'white',
+        textAlign: 'left',
     },
-    itemContainer: {
-        flexDirection: 'row',
+    card: {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        padding: 10,
+        marginRight: 10,
         alignItems: 'center',
-        padding: 10,
-        borderBottomWidth: 1,
-        borderColor: '#ccc',
-    },
-    itemText: {
-        fontSize: 16,
-        flex: 1,
-        textAlign: 'left',
-    },
-    itemImage: {
+        width: 100,
+    cardImage: {
         width: 60,
-        height: 80,
+        height: 60,
         borderRadius: 8,
+        marginBottom: 10,
+    },
+    cardText: {
+        fontSize: 14,
+        textAlign: 'center',
     },
     headerContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        padding: 10,
+        borderRadius: 10,
     },
     headerIcon: {
         marginRight: 10,
     },
 });
 
-const renderItem = ({ item }) => {
+const renderCard = ({ item }) => {
     return (
-        <View style={styles.itemContainer}>
-            <Text style={styles.itemText}>{item.key}</Text>
-            <Image
-                source={{ uri: item.image }}
-                style={styles.itemImage}
-                resizeMode="contain"
-            />
-        </View>
+        <TouchableOpacity
+            style={styles.card}
+            onPress={() => alert(item.desc)}
+        >
+            <Image source={item.image} style={styles.cardImage} />
+            <Text style={styles.cardText}>{item.key}</Text>
+        </TouchableOpacity>
     );
 };
 
 const App = () => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.addButtonText}>Add Pokémon</Text>
-            </TouchableOpacity>
-            <SectionList
-                sections={datasource}
-                keyExtractor={(item, index) => item.key + index}
-                renderItem={renderItem}
-                renderSectionHeader={({ section: { title, bgColor, icon, color } }) => (
-                    <View style={[styles.headerContainer, { backgroundColor: bgColor }]}>
-                        <Icon name={icon} size={20} color={color} style={styles.headerIcon} />
-                        <Text style={[styles.sectionHeader]}>{title}</Text>
+            {datasource.map((section, index) => (
+                <View key={index} style={{ marginBottom: 20 }}>
+                    <View
+                        style={[
+                            styles.headerContainer,
+                            { backgroundColor: section.bgColor },
+                        ]}
+                    >
+                        <Icon
+                            name={section.icon}
+                            size={20}
+                            color={section.color}
+                            style={styles.headerIcon}
+                        />
+                        <Text
+                            style={[
+                                styles.sectionHeader,
+                                { color: section.textColor },
+                            ]}
+                        >
+                            {section.title}
+                        </Text>
                     </View>
-                )}
-            />
+                    <FlatList
+                        data={section.data}
+                        horizontal
+                        renderItem={renderCard}
+                        keyExtractor={(item, idx) => item.key + idx}
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </View>
+            ))}
         </View>
     );
 };
+
 export default App;

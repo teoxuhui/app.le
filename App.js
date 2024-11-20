@@ -133,9 +133,7 @@ const App = () => {
                         data={section.data}
                         horizontal
                         renderItem={renderCard}
-                        keyExtractor={(item, idx) => item.key + idx}
-                        showsHorizontalScrollIndicator={false}
-                    />
+                        keyExtractor={(item, idx) => item.key + idx}/>
                 </View>
             ))}
         </View>
